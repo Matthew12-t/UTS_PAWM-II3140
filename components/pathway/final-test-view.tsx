@@ -4,6 +4,7 @@ import { useState } from "react"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import type { User } from "@supabase/supabase-js"
 import { createClient } from "@/lib/supabase/client"
 
@@ -24,6 +25,8 @@ export default function FinalTestView({ pathway, user }: FinalTestViewProps) {
   const [answers, setAnswers] = useState<number[]>([])
   const [showResults, setShowResults] = useState(false)
   const [score, setScore] = useState(0)
+  const [isCompleting, setIsCompleting] = useState(false)
+  const router = useRouter()
   const supabase = createClient()
 
   const questions = pathway.content?.questions || []
@@ -66,6 +69,45 @@ export default function FinalTestView({ pathway, user }: FinalTestViewProps) {
       .eq("user_id", user.id)
   }
 
+  const handleComplete = async () => {
+    setIsCompleting(true)
+    try {
+      console.log('[Client] Completing pathway:', pathway.id)
+      
+      const response = await fetch('/api/progress', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          pathwayId: pathway.id,
+          status: 'completed',
+          score: score
+        })
+      })
+
+      const data = await response.json()
+      console.log('[Client] API Response:', data)
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Gagal menyelesaikan pembelajaran')
+      }
+
+      if (data.nextPathwayId) {
+        console.log('[Client] Going to next pathway:', data.nextPathwayId)
+        router.push(`/pathway/${data.nextPathwayId}`)
+        router.refresh() // Force refresh untuk update data
+      } else {
+        console.log('[Client] No next pathway, going to dashboard')
+        router.push('/dashboard')
+        router.refresh() // Force refresh untuk update data
+      }
+    } catch (error) {
+      console.error('[Client] Error:', error)
+      alert(`Gagal menyelesaikan pembelajaran: ${error instanceof Error ? error.message : 'Unknown error'}`)
+    } finally {
+      setIsCompleting(false)
+    }
+  }
+
   if (showResults) {
     const correctCount = answers.filter((a, i) => a === questions[i]?.correct_answer).length
 
@@ -91,9 +133,18 @@ export default function FinalTestView({ pathway, user }: FinalTestViewProps) {
         </header>
 
         <nav>
-          <Link href="/dashboard" className="block">
-            <Button className="w-full bg-indigo-600 hover:bg-indigo-700">Kembali ke Dashboard</Button>
+          <Link href="/dashboard" className="block mb-4">
+            <Button variant="outline" className="w-full bg-transparent">
+              Kembali
+            </Button>
           </Link>
+          <Button 
+            className="w-full bg-indigo-600 hover:bg-indigo-700"
+            onClick={handleComplete}
+            disabled={isCompleting}
+          >
+            {isCompleting ? 'Menyimpan...' : 'Selesai'}
+          </Button>
         </nav>
       </article>
     )

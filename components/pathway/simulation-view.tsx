@@ -4,6 +4,7 @@ import { useState } from "react"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import type { User } from "@supabase/supabase-js"
 import { createClient } from "@/lib/supabase/client"
 
@@ -23,6 +24,8 @@ export default function SimulationView({ pathway, user }: SimulationViewProps) {
   const [selectedAtom1, setSelectedAtom1] = useState<string>("")
   const [selectedAtom2, setSelectedAtom2] = useState<string>("")
   const [result, setResult] = useState<any>(null)
+  const [isCompleting, setIsCompleting] = useState(false)
+  const router = useRouter()
   const supabase = createClient()
 
   const atoms = [
@@ -76,6 +79,44 @@ export default function SimulationView({ pathway, user }: SimulationViewProps) {
       is_correct: true,
       score: 10,
     })
+  }
+
+  const handleComplete = async () => {
+    setIsCompleting(true)
+    try {
+      console.log('[Client] Completing pathway:', pathway.id)
+      
+      const response = await fetch('/api/progress', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          pathwayId: pathway.id,
+          status: 'completed'
+        })
+      })
+
+      const data = await response.json()
+      console.log('[Client] API Response:', data)
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Gagal menyelesaikan pembelajaran')
+      }
+
+      if (data.nextPathwayId) {
+        console.log('[Client] Going to next pathway:', data.nextPathwayId)
+        router.push(`/pathway/${data.nextPathwayId}`)
+        router.refresh() // Force refresh untuk update data
+      } else {
+        console.log('[Client] No next pathway, going to dashboard')
+        router.push('/dashboard')
+        router.refresh() // Force refresh untuk update data
+      }
+    } catch (error) {
+      console.error('[Client] Error:', error)
+      alert(`Gagal menyelesaikan pembelajaran: ${error instanceof Error ? error.message : 'Unknown error'}`)
+    } finally {
+      setIsCompleting(false)
+    }
   }
 
   return (
@@ -165,7 +206,13 @@ export default function SimulationView({ pathway, user }: SimulationViewProps) {
             Kembali
           </Button>
         </Link>
-        <Button className="flex-1 bg-indigo-600 hover:bg-indigo-700">Lanjut ke Kuis</Button>
+        <Button 
+          className="flex-1 bg-indigo-600 hover:bg-indigo-700"
+          onClick={handleComplete}
+          disabled={isCompleting}
+        >
+          {isCompleting ? 'Menyimpan...' : 'Selesai'}
+        </Button>
       </nav>
     </article>
   )

@@ -4,6 +4,7 @@ import { useState } from "react"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import type { User } from "@supabase/supabase-js"
 import { createClient } from "@/lib/supabase/client"
 
@@ -24,6 +25,8 @@ export default function QuizView({ pathway, user }: QuizViewProps) {
   const [answers, setAnswers] = useState<number[]>([])
   const [showResults, setShowResults] = useState(false)
   const [score, setScore] = useState(0)
+  const [isCompleting, setIsCompleting] = useState(false)
+  const router = useRouter()
   const supabase = createClient()
 
   const questions = pathway.content?.questions || []
@@ -98,6 +101,45 @@ export default function QuizView({ pathway, user }: QuizViewProps) {
       .eq("user_id", user.id)
   }
 
+  const handleComplete = async () => {
+    setIsCompleting(true)
+    try {
+      console.log('[Client] Completing pathway:', pathway.id)
+      
+      const response = await fetch('/api/progress', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          pathwayId: pathway.id,
+          status: 'completed',
+          score: score
+        })
+      })
+
+      const data = await response.json()
+      console.log('[Client] API Response:', data)
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Gagal menyelesaikan pembelajaran')
+      }
+
+      if (data.nextPathwayId) {
+        console.log('[Client] Going to next pathway:', data.nextPathwayId)
+        router.push(`/pathway/${data.nextPathwayId}`)
+        router.refresh() // Force refresh untuk update data
+      } else {
+        console.log('[Client] No next pathway, going to dashboard')
+        router.push('/dashboard')
+        router.refresh() // Force refresh untuk update data
+      }
+    } catch (error) {
+      console.error('[Client] Error:', error)
+      alert(`Gagal menyelesaikan pembelajaran: ${error instanceof Error ? error.message : 'Unknown error'}`)
+    } finally {
+      setIsCompleting(false)
+    }
+  }
+
   if (showResults) {
     return (
       <article className="space-y-6">
@@ -117,10 +159,16 @@ export default function QuizView({ pathway, user }: QuizViewProps) {
         <nav className="flex gap-4 pt-6">
           <Link href="/dashboard" className="flex-1">
             <Button variant="outline" className="w-full bg-transparent">
-              Kembali ke Dashboard
+              Kembali
             </Button>
           </Link>
-          <Button className="flex-1 bg-indigo-600 hover:bg-indigo-700">Lanjut ke Materi Berikutnya</Button>
+          <Button 
+            className="flex-1 bg-indigo-600 hover:bg-indigo-700"
+            onClick={handleComplete}
+            disabled={isCompleting}
+          >
+            {isCompleting ? 'Menyimpan...' : 'Selesai'}
+          </Button>
         </nav>
       </article>
     )

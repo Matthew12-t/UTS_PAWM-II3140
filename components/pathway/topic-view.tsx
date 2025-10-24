@@ -36,7 +36,7 @@ export default function TopicView({ pathway }: TopicViewProps) {
         },
         body: JSON.stringify({
           pathwayId: pathway.id,
-          completed: true,
+          status: 'completed',
         }),
       })
 
@@ -55,10 +55,12 @@ export default function TopicView({ pathway }: TopicViewProps) {
       if (data.nextPathwayId) {
         console.log('[Client] Navigating to next pathway:', data.nextPathwayId)
         router.push(`/pathway/${data.nextPathwayId}`)
+        router.refresh() // Force refresh untuk update data
       } else {
         // Jika tidak ada pathway selanjutnya, kembali ke dashboard
         console.log('[Client] No next pathway, going to dashboard')
         router.push('/dashboard')
+        router.refresh() // Force refresh untuk update data
       }
     } catch (error) {
       console.error('[Client] Error:', error)

@@ -21,7 +21,6 @@ interface PathwayCardProps {
 
 export function PathwayCard({ pathway, user, isLocked = false }: PathwayCardProps) {
   const [progress, setProgress] = useState<any>(null)
-  const [locked, setLocked] = useState(isLocked)
   const supabase = createClient()
 
   useEffect(() => {
@@ -38,6 +37,11 @@ export function PathwayCard({ pathway, user, isLocked = false }: PathwayCardProp
 
     fetchProgress()
   }, [pathway.id, user.id, supabase])
+
+  // Log untuk debug
+  useEffect(() => {
+    console.log(`[PathwayCard ${pathway.order_number}] isLocked:`, isLocked)
+  }, [isLocked, pathway.order_number])
 
   const getTypeIcon = (type: string) => {
     switch (type) {
@@ -106,16 +110,16 @@ export function PathwayCard({ pathway, user, isLocked = false }: PathwayCardProp
     }
   }
 
-  const href = locked ? "#" : `/pathway/${pathway.id}`
+  const href = isLocked ? "#" : `/pathway/${pathway.id}`
 
   return (
-    <Link href={href} className={`h-full ${locked ? "pointer-events-none" : ""}`}>
+    <Link href={href} className={`h-full ${isLocked ? "pointer-events-none" : ""}`}>
       <Card
         className={`h-full p-6 hover:shadow-xl transition-all duration-300 border-0 overflow-hidden group ${
-          locked ? "bg-gray-100 opacity-60 cursor-not-allowed" : "bg-white cursor-pointer"
+          isLocked ? "bg-gray-100 opacity-60 cursor-not-allowed" : "bg-white cursor-pointer"
         }`}
       >
-        {locked && (
+        {isLocked && (
           <div className="absolute inset-0 bg-black/20 flex items-center justify-center z-20 rounded-lg">
             <div className="text-center">
               <div className="text-4xl mb-2">🔒</div>
@@ -126,7 +130,7 @@ export function PathwayCard({ pathway, user, isLocked = false }: PathwayCardProp
 
         <div
           className={`absolute inset-0 bg-gradient-to-br ${getTypeColor(pathway.type)} ${
-            locked ? "opacity-0" : "opacity-0 group-hover:opacity-5"
+            isLocked ? "opacity-0" : "opacity-0 group-hover:opacity-5"
           } transition-opacity duration-300`}
         ></div>
 
@@ -167,9 +171,9 @@ export function PathwayCard({ pathway, user, isLocked = false }: PathwayCardProp
           {/* Button */}
           <Button
             className={`w-full bg-gradient-to-r ${getTypeColor(pathway.type)} hover:shadow-lg transition-all duration-300 text-white font-semibold ${
-              locked ? "cursor-not-allowed opacity-50" : ""
+              isLocked ? "cursor-not-allowed opacity-50" : ""
             }`}
-            disabled={locked}
+            disabled={isLocked}
           >
             {progress?.status === "completed" ? "Lihat Hasil" : "Mulai Sekarang"}
           </Button>

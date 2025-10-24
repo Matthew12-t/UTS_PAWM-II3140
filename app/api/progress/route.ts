@@ -4,9 +4,9 @@ import { NextResponse } from 'next/server'
 export async function POST(request: Request) {
   try {
     const supabase = await createServerSupabaseClient()
-    const { pathwayId, completed } = await request.json()
+    const { pathwayId, status, score } = await request.json()
 
-    console.log('[API] Request:', { pathwayId, completed })
+    console.log('[API] Request:', { pathwayId, status, score })
 
     // Get current user
     const { data: { user }, error: userError } = await supabase.auth.getUser()
@@ -21,7 +21,7 @@ export async function POST(request: Request) {
     // Check if progress exists
     const { data: existingProgress } = await supabase
       .from('user_pathway_progress')
-      .select('id')
+      .select('id, status')
       .eq('user_id', user.id)
       .eq('pathway_id', pathwayId)
       .single()
@@ -32,27 +32,45 @@ export async function POST(request: Request) {
 
     if (existingProgress) {
       // Update existing progress
+      const updateData: any = {
+        status: status || 'completed',
+        updated_at: new Date().toISOString()
+      }
+      
+      if (status === 'completed') {
+        updateData.completed_at = new Date().toISOString()
+      }
+      
+      if (score !== undefined) {
+        updateData.score = score
+      }
+
       const { data, error } = await supabase
         .from('user_pathway_progress')
-        .update({
-          status: completed ? 'completed' : 'in_progress',
-          completed_at: completed ? new Date().toISOString() : null,
-          updated_at: new Date().toISOString()
-        })
+        .update(updateData)
         .eq('id', existingProgress.id)
         .select()
 
       progressResult = { data, error }
     } else {
       // Insert new progress
+      const insertData: any = {
+        user_id: user.id,
+        pathway_id: pathwayId,
+        status: status || 'completed'
+      }
+      
+      if (status === 'completed') {
+        insertData.completed_at = new Date().toISOString()
+      }
+      
+      if (score !== undefined) {
+        insertData.score = score
+      }
+
       const { data, error } = await supabase
         .from('user_pathway_progress')
-        .insert({
-          user_id: user.id,
-          pathway_id: pathwayId,
-          status: completed ? 'completed' : 'in_progress',
-          completed_at: completed ? new Date().toISOString() : null
-        })
+        .insert(insertData)
         .select()
 
       progressResult = { data, error }
@@ -66,6 +84,77 @@ export async function POST(request: Request) {
         { error: progressResult.error.message },
         { status: 500 }
       )
+    }
+
+    // Update overall user_progress statistics
+    const wasNotCompleted = !existingProgress || existingProgress.status !== 'completed'
+    const isNowCompleted = status === 'completed'
+    
+    if (wasNotCompleted && isNowCompleted) {
+      // Get total pathways count
+      const { count: totalPathways } = await supabase
+        .from('pathways')
+        .select('*', { count: 'exact', head: true })
+
+      // Get completed pathways count
+      const { count: completedPathways } = await supabase
+        .from('user_pathway_progress')
+        .select('*', { count: 'exact', head: true })
+        .eq('user_id', user.id)
+        .eq('status', 'completed')
+
+      // Get average score
+      const { data: progressData } = await supabase
+        .from('user_pathway_progress')
+        .select('score')
+        .eq('user_id', user.id)
+        .eq('status', 'completed')
+        .not('score', 'is', null)
+
+      const scores = progressData?.map(p => p.score).filter(s => s !== null) || []
+      const averageScore = scores.length > 0 
+        ? scores.reduce((a, b) => a + b, 0) / scores.length 
+        : 0
+
+      console.log('[API] Statistics:', { 
+        totalPathways, 
+        completedPathways, 
+        averageScore 
+      })
+
+      // Check if user_progress exists
+      const { data: existingUserProgress } = await supabase
+        .from('user_progress')
+        .select('id')
+        .eq('user_id', user.id)
+        .maybeSingle()
+
+      if (existingUserProgress) {
+        // Update existing user_progress
+        await supabase
+          .from('user_progress')
+          .update({
+            total_experiments: totalPathways || 0,
+            completed_experiments: completedPathways || 0,
+            total_score: Math.round(averageScore * (completedPathways || 0)),
+            average_score: averageScore,
+            updated_at: new Date().toISOString()
+          })
+          .eq('id', existingUserProgress.id)
+      } else {
+        // Insert new user_progress
+        await supabase
+          .from('user_progress')
+          .insert({
+            user_id: user.id,
+            total_experiments: totalPathways || 0,
+            completed_experiments: completedPathways || 0,
+            total_score: Math.round(averageScore * (completedPathways || 0)),
+            average_score: averageScore
+          })
+      }
+
+      console.log('[API] User progress updated successfully')
     }
 
     // Cari pathway selanjutnya berdasarkan order_number
@@ -89,6 +178,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({
       success: true,
+      message: 'Progress updated successfully',
       nextPathwayId: nextPathway?.id || null
     })
   } catch (error) {

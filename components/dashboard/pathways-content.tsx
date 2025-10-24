@@ -23,51 +23,98 @@ export default function PathwaysContent({ user }: { user: User }) {
   const [userProgress, setUserProgress] = useState<any[]>([])
   const supabase = createClient()
 
-  useEffect(() => {
-    const fetchPathways = async () => {
-      const { data } = await supabase.from("pathways").select("*").order("order_number", { ascending: true })
+  const fetchPathways = async () => {
+    const { data } = await supabase.from("pathways").select("*").order("order_number", { ascending: true })
 
-      if (data) {
-        setPathways(data)
-      }
-      setLoading(false)
+    if (data) {
+      setPathways(data)
     }
+    setLoading(false)
+  }
 
+  const fetchUserProgress = async () => {
+    console.log('[PathwaysContent] Fetching user progress...')
+    const { data } = await supabase
+      .from("user_pathway_progress")
+      .select("*")
+      .eq("user_id", user.id)
+      .order("pathway_id", { ascending: true })
+
+    console.log('[PathwaysContent] User progress fetched:', data)
+    
+    if (data) {
+      setUserProgress(data)
+    }
+  }
+
+  useEffect(() => {
     fetchPathways()
-  }, [supabase])
+    fetchUserProgress()
 
-  useEffect(() => {
-    const fetchUserProgress = async () => {
-      const { data } = await supabase
-        .from("user_pathway_progress")
-        .select("*")
-        .eq("user_id", user.id)
-        .order("pathway_id", { ascending: true })
-
-      if (data) {
-        setUserProgress(data)
+    // Refresh when page becomes visible again
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        console.log('[PathwaysContent] Page visible, refreshing progress...')
+        fetchUserProgress()
       }
     }
 
-    fetchUserProgress()
-  }, [user.id, supabase])
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
+    }
+  }, [])
+
+  useEffect(() => {
+    console.log('[PathwaysContent] Setting up real-time subscription for user:', user.id)
+    
+    const channel = supabase
+      .channel('user-progress-changes')
+      .on('postgres_changes', {
+        event: '*',
+        schema: 'public',
+        table: 'user_pathway_progress',
+        filter: `user_id=eq.${user.id}`
+      }, (payload) => {
+        console.log('[PathwaysContent] Real-time update received:', payload)
+        fetchUserProgress()
+      })
+      .subscribe((status) => {
+        console.log('[PathwaysContent] Subscription status:', status)
+      })
+
+    return () => {
+      console.log('[PathwaysContent] Cleaning up subscription')
+      supabase.removeChannel(channel)
+    }
+  }, [user.id])
 
   const [completedCount, setCompletedCount] = useState(0)
 
   useEffect(() => {
+    console.log('[PathwaysContent] userProgress updated:', userProgress)
     setCompletedCount(userProgress.filter((p) => p.status === "completed").length)
   }, [userProgress])
 
   const progressPercentage = pathways.length > 0 ? Math.round((completedCount / pathways.length) * 100) : 0
 
   const isPathwayLocked = (pathwayOrderNumber: number): boolean => {
-    if (pathwayOrderNumber === 1) return false // First pathway is always unlocked
+    if (pathwayOrderNumber === 1) return false
 
     const previousPathway = pathways.find((p) => p.order_number === pathwayOrderNumber - 1)
-    if (!previousPathway) return false
+    if (!previousPathway) {
+      console.log(`Pathway ${pathwayOrderNumber}: No previous pathway found`)
+      return false
+    }
 
     const previousProgress = userProgress.find((p) => p.pathway_id === previousPathway.id)
-    return previousProgress?.status !== "completed"
+    const isLocked = previousProgress?.status !== "completed"
+    
+    console.log(`Pathway ${pathwayOrderNumber}: previousPathway ID=${previousPathway.id}, status=${previousProgress?.status || 'not found'}, locked=${isLocked}`)
+    console.log(`  userProgress data:`, userProgress)
+    
+    return isLocked
   }
 
   return (
@@ -140,25 +187,28 @@ export default function PathwaysContent({ user }: { user: User }) {
             <div className="absolute left-7 top-0 bottom-0 w-1 bg-gradient-to-b from-indigo-400 via-blue-400 to-cyan-400 rounded-full"></div>
 
             {/* Pathway cards in vertical layout */}
-            {pathways.map((pathway, index) => (
-              <div key={pathway.id} className="relative pl-20">
-                {/* Timeline dot */}
-                <div className="absolute left-0 top-6 w-16 h-16 -ml-8 flex items-center justify-center">
-                  <div
-                    className={`w-16 h-16 rounded-full border-4 flex items-center justify-center shadow-lg font-bold text-lg ${
-                      isPathwayLocked(pathway.order_number)
-                        ? "bg-gray-400 border-gray-500 text-gray-600"
-                        : "bg-white border-indigo-400 text-indigo-600"
-                    }`}
-                  >
-                    {isPathwayLocked(pathway.order_number) ? "🔒" : pathway.order_number}
+            {pathways.map((pathway, index) => {
+              const locked = isPathwayLocked(pathway.order_number)
+              return (
+                <div key={pathway.id} className="relative pl-20">
+                  {/* Timeline dot */}
+                  <div className="absolute left-0 top-6 w-16 h-16 -ml-8 flex items-center justify-center">
+                    <div
+                      className={`w-16 h-16 rounded-full border-4 flex items-center justify-center shadow-lg font-bold text-lg ${
+                        locked
+                          ? "bg-gray-400 border-gray-500 text-gray-600"
+                          : "bg-white border-indigo-400 text-indigo-600"
+                      }`}
+                    >
+                      {locked ? "🔒" : pathway.order_number}
+                    </div>
                   </div>
-                </div>
 
-                {/* Pathway Card */}
-                <PathwayCard pathway={pathway} user={user} isLocked={isPathwayLocked(pathway.order_number)} />
-              </div>
-            ))}
+                  {/* Pathway Card */}
+                  <PathwayCard pathway={pathway} user={user} isLocked={locked} />
+                </div>
+              )
+            })}
           </div>
         )}
       </section>
