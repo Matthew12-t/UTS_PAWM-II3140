@@ -67,7 +67,7 @@ export default function DashboardContent({ user }: { user: User }) {
   ]
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+    <body className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
       {/* Header */}
       <header className="bg-white border-b border-slate-200 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
@@ -75,22 +75,25 @@ export default function DashboardContent({ user }: { user: User }) {
             <h1 className="text-3xl font-bold text-gray-900">ChemLab</h1>
             <p className="text-sm text-gray-600">Virtual Chemistry Laboratory</p>
           </div>
-          <UserMenu user={user} />
+          <nav aria-label="User menu">
+            <UserMenu user={user} />
+          </nav>
         </div>
       </header>
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Welcome Section */}
-        <div className="mb-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">
+        <section aria-labelledby="welcome-section" className="mb-8">
+          <h2 id="welcome-section" className="text-2xl font-bold text-gray-900 mb-2">
             Welcome back, {user.user_metadata?.full_name || "Student"}!
           </h2>
           <p className="text-gray-600">Continue your chemistry learning journey with interactive experiments</p>
-        </div>
+        </section>
 
-        {/* Stats Grid - Bento Box Style */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        {/* Stats Grid */}
+        <section aria-labelledby="stats-overview" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          <h2 id="stats-overview" className="sr-only">User Progress Overview</h2>
           <StatsCard title="Total Experiments" value={progress?.total_experiments || 0} icon="📊" color="bg-blue-50" />
           <StatsCard title="Completed" value={progress?.completed_experiments || 0} icon="✅" color="bg-green-50" />
           <StatsCard title="Total Score" value={progress?.total_score || 0} icon="🏆" color="bg-amber-50" />
@@ -100,41 +103,55 @@ export default function DashboardContent({ user }: { user: User }) {
             icon="📈"
             color="bg-purple-50"
           />
-        </div>
+        </section>
 
         {/* Experiments Section */}
-        <div className="mb-8">
-          <h3 className="text-xl font-bold text-gray-900 mb-4">Available Experiments</h3>
+        <section aria-labelledby="available-experiments" className="mb-8">
+          <h3 id="available-experiments" className="text-xl font-bold text-gray-900 mb-4">
+            Available Experiments
+          </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {experiments.map((exp) => (
-              <LabCard key={exp.id} experiment={exp} />
+              <article key={exp.id}>
+                <LabCard experiment={exp} />
+              </article>
             ))}
           </div>
-        </div>
+        </section>
 
         {/* Quick Actions */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <Card className="p-6 bg-gradient-to-br from-indigo-50 to-blue-50 border-indigo-200">
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">Recent Sessions</h3>
-            <p className="text-gray-600 text-sm mb-4">View and continue your previous lab sessions</p>
-            <Link href="/dashboard/sessions">
-              <Button variant="outline" className="w-full bg-transparent">
-                View Sessions
-              </Button>
-            </Link>
-          </Card>
+        <section aria-labelledby="quick-actions" className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <h3 id="quick-actions" className="sr-only">Quick Access</h3>
 
-          <Card className="p-6 bg-gradient-to-br from-emerald-50 to-green-50 border-emerald-200">
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">Your Results</h3>
-            <p className="text-gray-600 text-sm mb-4">Check your experiment results and scores</p>
-            <Link href="/dashboard/results">
-              <Button variant="outline" className="w-full bg-transparent">
-                View Results
-              </Button>
-            </Link>
-          </Card>
-        </div>
+          <article>
+            <Card className="p-6 bg-gradient-to-br from-indigo-50 to-blue-50 border-indigo-200">
+              <h4 className="text-lg font-semibold text-gray-900 mb-2">Recent Sessions</h4>
+              <p className="text-gray-600 text-sm mb-4">View and continue your previous lab sessions</p>
+              <Link href="/dashboard/sessions">
+                <Button variant="outline" className="w-full bg-transparent">
+                  View Sessions
+                </Button>
+              </Link>
+            </Card>
+          </article>
+
+          <article>
+            <Card className="p-6 bg-gradient-to-br from-emerald-50 to-green-50 border-emerald-200">
+              <h4 className="text-lg font-semibold text-gray-900 mb-2">Your Results</h4>
+              <p className="text-gray-600 text-sm mb-4">Check your experiment results and scores</p>
+              <Link href="/dashboard/results">
+                <Button variant="outline" className="w-full bg-transparent">
+                  View Results
+                </Button>
+              </Link>
+            </Card>
+          </article>
+        </section>
       </main>
-    </div>
+
+      <footer className="text-center text-sm text-gray-500 py-4 border-t border-slate-200">
+        <p>© {new Date().getFullYear()} ChemLab — Virtual Chemistry Laboratory</p>
+      </footer>
+    </body>
   )
 }

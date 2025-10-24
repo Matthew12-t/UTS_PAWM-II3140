@@ -70,79 +70,86 @@ export default function FinalTestView({ pathway, user }: FinalTestViewProps) {
     const correctCount = answers.filter((a, i) => a === questions[i]?.correct_answer).length
 
     return (
-      <div className="space-y-6">
-        <Card className="p-8 bg-gradient-to-br from-purple-50 to-pink-50 border-purple-200">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">Hasil Tes Akhir</h2>
-          <div className="text-center">
-            <div className="text-6xl font-bold text-purple-600 mb-4">{score}%</div>
-            <p className="text-lg text-gray-700 mb-2">
-              Anda menjawab {correctCount} dari {questions.length} pertanyaan dengan benar
-            </p>
-            <p className="text-gray-600">
-              {score >= 80
-                ? "Selamat! Anda telah menguasai materi Chemical Bonding dengan baik."
-                : score >= 60
-                  ? "Bagus! Anda sudah memahami sebagian besar materi. Pelajari kembali bagian yang kurang."
-                  : "Anda perlu mempelajari kembali materi Chemical Bonding."}
-            </p>
-          </div>
-        </Card>
+      <article className="space-y-6">
+        <header>
+          <Card className="p-8 bg-gradient-to-br from-purple-50 to-pink-50 border-purple-200">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Hasil Tes Akhir</h2>
+            <div className="text-center">
+              <div className="text-6xl font-bold text-purple-600 mb-4">{score}%</div>
+              <p className="text-lg text-gray-700 mb-2">
+                Anda menjawab {correctCount} dari {questions.length} pertanyaan dengan benar
+              </p>
+              <p className="text-gray-600">
+                {score >= 80
+                  ? "Selamat! Anda telah menguasai materi Chemical Bonding dengan baik."
+                  : score >= 60
+                    ? "Bagus! Anda sudah memahami sebagian besar materi. Pelajari kembali bagian yang kurang."
+                    : "Anda perlu mempelajari kembali materi Chemical Bonding."}
+              </p>
+            </div>
+          </Card>
+        </header>
 
-        <Link href="/dashboard" className="block">
-          <Button className="w-full bg-indigo-600 hover:bg-indigo-700">Kembali ke Dashboard</Button>
-        </Link>
-      </div>
+        <nav>
+          <Link href="/dashboard" className="block">
+            <Button className="w-full bg-indigo-600 hover:bg-indigo-700">Kembali ke Dashboard</Button>
+          </Link>
+        </nav>
+      </article>
     )
   }
 
   const question = questions[currentQuestion]
 
   return (
-    <div className="space-y-6">
-      <Card className="p-8 bg-gradient-to-br from-red-50 to-orange-50 border-red-200">
-        <h2 className="text-3xl font-bold text-gray-900 mb-4">{pathway.title}</h2>
-        <div className="flex justify-between items-center">
-          <p className="text-lg text-gray-700">
-            Pertanyaan {currentQuestion + 1} dari {questions.length}
-          </p>
-          <div className="w-32 bg-gray-200 rounded-full h-2">
-            <div
-              className="bg-red-500 h-2 rounded-full transition-all"
-              style={{ width: `${((currentQuestion + 1) / questions.length) * 100}%` }}
-            ></div>
+    <article className="space-y-6">
+      <header>
+        <Card className="p-8 bg-gradient-to-br from-red-50 to-orange-50 border-red-200">
+          <h2 className="text-3xl font-bold text-gray-900 mb-4">{pathway.title}</h2>
+          <div className="flex justify-between items-center">
+            <p className="text-lg text-gray-700">
+              Pertanyaan {currentQuestion + 1} dari {questions.length}
+            </p>
+            <div className="w-32 bg-gray-200 rounded-full h-2">
+              <div
+                className="bg-red-500 h-2 rounded-full transition-all"
+                style={{ width: `${((currentQuestion + 1) / questions.length) * 100}%` }}
+              ></div>
+            </div>
           </div>
-        </div>
-      </Card>
+        </Card>
+      </header>
 
-      <Card className="p-6">
-        <h3 className="text-xl font-semibold text-gray-900 mb-6">{question?.question}</h3>
+      <section>
+        <Card className="p-6">
+          <h3 className="text-xl font-semibold text-gray-900 mb-6">{question?.question}</h3>
 
-        <div className="space-y-3 mb-6">
-          {question?.options?.map((option: string, index: number) => (
-            <button
-              key={index}
-              onClick={() => handleAnswer(index)}
-              className={`w-full p-4 text-left rounded-lg border-2 transition-all ${
-                answers[currentQuestion] === index
-                  ? "border-purple-600 bg-purple-50"
-                  : "border-gray-200 hover:border-gray-300"
-              }`}
-            >
-              <div className="flex items-center gap-3">
-                <div
-                  className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${
-                    answers[currentQuestion] === index ? "border-purple-600 bg-purple-600" : "border-gray-300"
-                  }`}
-                >
-                  {answers[currentQuestion] === index && <span className="text-white text-sm">✓</span>}
+          <div className="space-y-3 mb-6">
+            {question?.options?.map((option: string, index: number) => (
+              <button
+                key={index}
+                onClick={() => handleAnswer(index)}
+                className={`w-full p-4 text-left rounded-lg border-2 transition-all ${
+                  answers[currentQuestion] === index
+                    ? "border-purple-600 bg-purple-50"
+                    : "border-gray-200 hover:border-gray-300"
+                }`}
+              >
+                <div className="flex items-center gap-3">
+                  <div
+                    className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${
+                      answers[currentQuestion] === index ? "border-purple-600 bg-purple-600" : "border-gray-300"
+                    }`}
+                  >
+                    {answers[currentQuestion] === index && <span className="text-white text-sm">✓</span>}
+                  </div>
+                  <span className="text-gray-900">{option}</span>
                 </div>
-                <span className="text-gray-900">{option}</span>
-              </div>
-            </button>
-          ))}
-        </div>
+              </button>
+            ))}
+          </div>
 
-        <div className="flex gap-4">
+          <nav className="flex gap-4">
           <Button
             onClick={handlePrevious}
             disabled={currentQuestion === 0}
@@ -160,8 +167,9 @@ export default function FinalTestView({ pathway, user }: FinalTestViewProps) {
               Selesai & Lihat Hasil
             </Button>
           )}
-        </div>
-      </Card>
-    </div>
+          </nav>
+        </Card>
+      </section>
+    </article>
   )
 }

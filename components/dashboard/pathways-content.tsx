@@ -71,10 +71,9 @@ export default function PathwaysContent({ user }: { user: User }) {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-indigo-900 to-slate-900 relative overflow-hidden">
+    <main className="min-h-screen bg-gradient-to-br from-slate-900 via-indigo-900 to-slate-900 relative overflow-hidden">
       <AnimatedBackground />
 
-      {/* Header */}
       <header className="relative z-10 bg-white/10 backdrop-blur-md border-b border-white/20 sticky top-0">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
           <div>
@@ -85,19 +84,15 @@ export default function PathwaysContent({ user }: { user: User }) {
         </div>
       </header>
 
-      {/* Main Content */}
-      <main className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Welcome Section */}
-        <div className="mb-12">
+      <section className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <header className="mb-12">
           <h2 className="text-4xl font-bold text-white mb-2">
             Selamat datang kembali, {user.user_metadata?.full_name || "Siswa"}!
           </h2>
           <p className="text-lg text-indigo-100">
             Lanjutkan perjalanan belajar kimia Anda dengan materi Chemical Bonding
           </p>
-        </div>
-
-        {/* Progress Overview */}
+        </header>
         <Card className="p-8 mb-12 bg-gradient-to-r from-indigo-500 via-blue-500 to-cyan-500 border-0 text-white shadow-lg">
           <div className="flex items-center justify-between mb-6">
             <div>
@@ -166,7 +161,7 @@ export default function PathwaysContent({ user }: { user: User }) {
             ))}
           </div>
         )}
-      </main>
-    </div>
+      </section>
+    </main>
   )
 }

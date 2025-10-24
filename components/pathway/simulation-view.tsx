@@ -79,16 +79,19 @@ export default function SimulationView({ pathway, user }: SimulationViewProps) {
   }
 
   return (
-    <div className="space-y-6">
-      <Card className="p-8 bg-gradient-to-br from-purple-50 to-pink-50 border-purple-200">
-        <h2 className="text-3xl font-bold text-gray-900 mb-4">{pathway.title}</h2>
-        <p className="text-lg text-gray-700">{pathway.content?.instructions}</p>
-      </Card>
+    <article className="space-y-6">
+      <header>
+        <Card className="p-8 bg-gradient-to-br from-purple-50 to-pink-50 border-purple-200">
+          <h2 className="text-3xl font-bold text-gray-900 mb-4">{pathway.title}</h2>
+          <p className="text-lg text-gray-700">{pathway.content?.instructions}</p>
+        </Card>
+      </header>
 
-      <Card className="p-6">
-        <h3 className="text-xl font-semibold text-gray-900 mb-6">Pilih Dua Atom</h3>
+      <section>
+        <Card className="p-6">
+          <h3 className="text-xl font-semibold text-gray-900 mb-6">Pilih Dua Atom</h3>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-3">Atom Pertama</label>
             <select
@@ -153,16 +156,17 @@ export default function SimulationView({ pathway, user }: SimulationViewProps) {
             </div>
           </div>
         )}
-      </Card>
+        </Card>
+      </section>
 
-      <div className="flex gap-4 pt-6">
+      <nav className="flex gap-4 pt-6">
         <Link href="/dashboard" className="flex-1">
           <Button variant="outline" className="w-full bg-transparent">
             Kembali
           </Button>
         </Link>
         <Button className="flex-1 bg-indigo-600 hover:bg-indigo-700">Lanjut ke Kuis</Button>
-      </div>
-    </div>
+      </nav>
+    </article>
   )
 }
