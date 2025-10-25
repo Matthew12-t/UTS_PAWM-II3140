@@ -61,6 +61,31 @@ export default function FinalTestView({ pathway, user }: FinalTestViewProps) {
     setScore(finalScore)
     setShowResults(true)
 
+    for (let i = 0; i < questions.length; i++) {
+      const question = questions[i]
+      const userAnswer = answers[i]
+      const isCorrect = userAnswer === question.correct_answer
+
+      await supabase
+        .from("quiz_answers")
+        .delete()
+        .eq("pathway_id", pathway.id)
+        .eq("user_id", user.id)
+        .eq("question_id", question.id)
+
+      await supabase
+        .from("quiz_answers")
+        .insert({
+          pathway_id: pathway.id,
+          user_id: user.id,
+          question_id: question.id,
+          user_answer: userAnswer,
+          correct_answer: question.correct_answer,
+          is_correct: isCorrect,
+          explanation: question.explanation || ""
+        })
+    }
+
     await supabase
       .from("user_pathway_progress")
       .update({ score: finalScore, status: "completed" })
