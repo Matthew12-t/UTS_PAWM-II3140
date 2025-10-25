@@ -49,7 +49,10 @@ export default function LoginPage() {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
-          redirectTo: `${window.location.origin}/auth/callback`,
+          redirectTo:
+            typeof window !== "undefined"
+              ? `${window.location.origin}/auth/callback`
+              : "https://uts-pawm-ii-3140-kelompok-14.vercel.app/auth/callback",
         },
       })
 
@@ -92,6 +95,7 @@ export default function LoginPage() {
           style={{ animationDelay: "1s" }}
         ></div>
       </div>
+
 
       <div className="relative z-10 flex items-center justify-center min-h-screen p-4">
       <div className="w-full max-w-md">
