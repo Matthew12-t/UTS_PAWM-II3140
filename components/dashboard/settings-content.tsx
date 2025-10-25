@@ -13,7 +13,7 @@ export default function SettingsContent({ user }: { user: User }) {
 
   const handleLogout = async () => {
     await supabase.auth.signOut()
-    router.push("/auth/login")
+    router.push("/")
   }
 
   return (

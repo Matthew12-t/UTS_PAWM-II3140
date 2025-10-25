@@ -2,7 +2,7 @@ import { redirect } from "next/navigation"
 import { createServerSupabaseClient } from "@/lib/supabase/server"
 import PathwayContent from "@/components/pathway/pathway-content"
 
-export default async function PathwayPage({ params }: { params: { id: string } }) {
+export default async function PathwayPage({ params }: { params: Promise<{ id: string }> }) {
   const supabase = await createServerSupabaseClient()
 
   const {
@@ -13,7 +13,8 @@ export default async function PathwayPage({ params }: { params: { id: string } }
     redirect("/auth/login")
   }
 
-  const pathwayId = Number.parseInt(params.id)
+  const { id } = await params
+  const pathwayId = Number.parseInt(id)
 
   // Fetch pathway data
   const { data: pathway } = await supabase.from("pathways").select("*").eq("id", pathwayId).single()

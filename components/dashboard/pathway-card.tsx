@@ -120,10 +120,9 @@ export function PathwayCard({ pathway, user, isLocked = false }: PathwayCardProp
         }`}
       >
         {isLocked && (
-          <div className="absolute inset-0 bg-black/20 flex items-center justify-center z-20 rounded-lg">
+          <div className="absolute inset-0 bg-black/0 flex items-center justify-center z-20 rounded-lg">
             <div className="text-center">
-              <div className="text-4xl mb-2">🔒</div>
-              <p className="text-sm font-semibold text-gray-700">Selesaikan pathway sebelumnya terlebih dahulu</p>
+              <div className="text-5xl mb-2">🔒</div>
             </div>
           </div>
         )}
