@@ -70,13 +70,13 @@ export function QuizDetailModal({ isOpen, onClose, pathwayId, user, pathwayTitle
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <Card className="w-full max-w-2xl max-h-[90vh] overflow-y-auto bg-white">
-        <div className="sticky top-0 bg-gradient-to-r from-indigo-600 to-blue-600 text-white p-6 border-b">
-          <h2 className="text-2xl font-bold mb-2">{pathwayTitle}</h2>
-          <p className="text-indigo-100">Pembahasan Jawaban Anda</p>
+      <div className="w-full max-w-2xl max-h-[90vh] bg-white rounded-lg shadow-xl flex flex-col overflow-hidden">
+        <div className="bg-gradient-to-r from-indigo-600 to-blue-600 text-white p-6 border-b z-10 flex-shrink-0">
+          <h2 className="text-2xl font-bold">{pathwayTitle}</h2>
+          <p className="text-indigo-100 text-sm mt-1">Pembahasan Jawaban Anda</p>
         </div>
 
-        <div className="p-6 space-y-6">
+        <div className="flex-1 overflow-y-auto p-6 space-y-6">
           {loading ? (
             <p className="text-center text-gray-600">Memuat pembahasan...</p>
           ) : answers.length === 0 ? (
@@ -126,12 +126,12 @@ export function QuizDetailModal({ isOpen, onClose, pathwayId, user, pathwayTitle
           )}
         </div>
 
-        <div className="sticky bottom-0 bg-gray-50 border-t p-6 flex justify-end gap-3">
+        <div className="bg-gray-50 border-t p-6 flex justify-end gap-3 flex-shrink-0">
           <Button onClick={onClose} className="bg-indigo-600 hover:bg-indigo-700 text-white">
             Tutup
           </Button>
         </div>
-      </Card>
+      </div>
     </div>
   )
 }
