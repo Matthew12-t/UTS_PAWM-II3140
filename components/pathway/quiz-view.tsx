@@ -93,7 +93,6 @@ export default function QuizView({ pathway, user }: QuizViewProps) {
     setScore(finalScore)
     setShowResults(true)
 
-    // Save quiz result to pathway progress
     await supabase
       .from("user_pathway_progress")
       .update({ score: finalScore, status: "completed" })

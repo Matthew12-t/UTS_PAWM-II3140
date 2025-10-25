@@ -18,9 +18,7 @@ export default function SettingsContent({ user }: { user: User }) {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-indigo-900 to-slate-900 relative overflow-hidden">
-      {/* Background decorations - same as homepage */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Floating icons background */}
         <div className="absolute top-10 left-10 text-6xl opacity-10 animate-pulse">⚛️</div>
         <div className="absolute top-32 right-20 text-5xl opacity-10 animate-pulse" style={{ animationDelay: "1s" }}>
           🧪
@@ -38,7 +36,6 @@ export default function SettingsContent({ user }: { user: User }) {
           🧬
         </div>
 
-        {/* Gradient orbs */}
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-indigo-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse"></div>
         <div
           className="absolute top-0 right-1/4 w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse"
@@ -50,7 +47,6 @@ export default function SettingsContent({ user }: { user: User }) {
         ></div>
       </div>
 
-      {/* Header */}
       <header className="relative z-10 bg-white/10 backdrop-blur-md border-b border-white/20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <Link
@@ -63,10 +59,8 @@ export default function SettingsContent({ user }: { user: User }) {
         </div>
       </header>
 
-      {/* Main Content */}
       <main className="relative z-10 max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="space-y-6">
-          {/* Account Settings */}
           <Card className="p-6 bg-white/95 backdrop-blur-sm">
             <h2 className="text-xl font-bold text-gray-900 mb-4">Account Settings</h2>
             <div className="space-y-4">
@@ -81,7 +75,6 @@ export default function SettingsContent({ user }: { user: User }) {
             </div>
           </Card>
 
-          {/* Preferences */}
           <Card className="p-6 bg-white/95 backdrop-blur-sm">
             <h2 className="text-xl font-bold text-gray-900 mb-4">Preferences</h2>
             <div className="space-y-4">
@@ -96,7 +89,6 @@ export default function SettingsContent({ user }: { user: User }) {
             </div>
           </Card>
 
-          {/* Danger Zone */}
           <Card className="p-1 border-invisible-1 bg-invisible-1">
             <Button onClick={handleLogout} className="bg-red-600 hover:bg-red-700 text-white">
               Logout

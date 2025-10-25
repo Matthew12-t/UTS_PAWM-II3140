@@ -81,7 +81,6 @@ export default function SimulasiPembentukanIkatan({
       return { F1: { x: -Fmag * dir.x, y: -Fmag * dir.y }, F2: { x: Fmag * dir.x, y: -Fmag * dir.y }, mag: Fmag, r };
     }
 
-    // --- Pointer: hanya boleh drag horizontal
     const pointer = { down: false, target: null as any, ox: 0 };
 
     const hit = (x: number, y: number, d: any) =>
@@ -117,7 +116,6 @@ export default function SimulasiPembentukanIkatan({
     canvas.addEventListener("pointerup", stopDrag);
     canvas.addEventListener("pointerleave", stopDrag);
 
-    // --- Gambar atom
     const drawNucleus = ({ x, y, r }: any, color = "#1845ff") => {
       ctx.fillStyle = color;
       ctx.beginPath();
@@ -153,11 +151,10 @@ export default function SimulasiPembentukanIkatan({
       ctx.fill();
     };
 
-    // --- 🔥 Cloud merah per atom + merge effect
     const drawElectronCloud = () => {
       const dx = a2.x - a1.x;
       const dist = Math.abs(dx);
-      const overlapFactor = Math.max(0, 1 - dist / 300); // makin dekat, makin gabung
+      const overlapFactor = Math.max(0, 1 - dist / 300); 
 
       ctx.globalCompositeOperation = "lighter";
 
@@ -172,11 +169,9 @@ export default function SimulasiPembentukanIkatan({
         ctx.fill();
       };
 
-      // dua cloud
       drawCloud(a1.x, a1.y, 1 - overlapFactor * 0.5);
       drawCloud(a2.x, a2.y, 1 - overlapFactor * 0.5);
 
-      // kalau dekat, tambahkan glow tengah
       if (overlapFactor > 0.2) {
         const midX = (a1.x + a2.x) / 2;
         const midY = a1.y;
@@ -284,7 +279,6 @@ export default function SimulasiPembentukanIkatan({
 
         <canvas ref={canvasRef} style={{ width: "100%", height: "100%" }} />
 
-        {/* 🔹 Teks di atas canvas */}
         <div
           style={{
             position: "absolute",

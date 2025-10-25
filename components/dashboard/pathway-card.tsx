@@ -134,7 +134,6 @@ export function PathwayCard({ pathway, user, isLocked = false }: PathwayCardProp
         ></div>
 
         <div className="relative z-10">
-          {/* Header dengan icon dan status */}
           <div className="flex items-start justify-between mb-4">
             <div className="flex items-center gap-3">
               <div
@@ -154,10 +153,8 @@ export function PathwayCard({ pathway, user, isLocked = false }: PathwayCardProp
             )}
           </div>
 
-          {/* Description */}
           <p className="text-sm text-gray-600 mb-4 line-clamp-2">{pathway.description}</p>
 
-          {/* Score display jika ada */}
           {progress?.score && (
             <div className="mb-4 p-3 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border border-blue-100">
               <p className="text-sm text-gray-700">
@@ -167,7 +164,6 @@ export function PathwayCard({ pathway, user, isLocked = false }: PathwayCardProp
             </div>
           )}
 
-          {/* Button */}
           <Button
             className={`w-full bg-gradient-to-r ${getTypeColor(pathway.type)} hover:shadow-lg transition-all duration-300 text-white font-semibold ${
               isLocked ? "cursor-not-allowed opacity-50" : ""

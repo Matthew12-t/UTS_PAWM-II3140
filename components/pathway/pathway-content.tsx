@@ -34,7 +34,6 @@ export default function PathwayContent({ user, pathway }: { user: User; pathway:
         .single()
 
       if (!data) {
-        // Create progress record if it doesn't exist
         await supabase.from("user_pathway_progress").insert({
           user_id: user.id,
           pathway_id: pathway.id,
@@ -49,7 +48,6 @@ export default function PathwayContent({ user, pathway }: { user: User; pathway:
   }, [pathway.id, user.id, supabase])
 
   const renderContent = () => {
-    // Routing khusus untuk simulasi berdasarkan judul
     if (pathway.type === "simulation") {
       if (pathway.title.includes("Simulasi Senyawa")) {
         return <SimulasiSenyawa pathway={pathway} user={user} />
@@ -57,11 +55,9 @@ export default function PathwayContent({ user, pathway }: { user: User; pathway:
       if (pathway.title.includes("Simulasi Pembentukan Ikatan Kimia")) {
         return <SimulasiPembentukanIkatan pathway={pathway} user={user} />
       }
-      // Jika tidak ada simulasi yang match, tampilkan error
       return <div className="text-red-600">Simulasi tidak ditemukan: {pathway.title}</div>
     }
 
-    // Routing untuk pathway type lainnya
     switch (pathway.type) {
       case "topic":
         return <TopicView pathway={pathway} />

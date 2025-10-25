@@ -61,7 +61,6 @@ export default function FinalTestView({ pathway, user }: FinalTestViewProps) {
     setScore(finalScore)
     setShowResults(true)
 
-    // Save final test result
     await supabase
       .from("user_pathway_progress")
       .update({ score: finalScore, status: "completed" })

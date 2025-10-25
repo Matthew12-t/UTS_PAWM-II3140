@@ -68,7 +68,6 @@ export default function DashboardContent({ user }: { user: User }) {
 
   return (
     <body className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
-      {/* Header */}
       <header className="bg-white border-b border-slate-200 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
           <div>
@@ -81,9 +80,7 @@ export default function DashboardContent({ user }: { user: User }) {
         </div>
       </header>
 
-      {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Welcome Section */}
         <section aria-labelledby="welcome-section" className="mb-8">
           <h2 id="welcome-section" className="text-2xl font-bold text-gray-900 mb-2">
             Welcome back, {user.user_metadata?.full_name || "Student"}!
@@ -91,7 +88,6 @@ export default function DashboardContent({ user }: { user: User }) {
           <p className="text-gray-600">Continue your chemistry learning journey with interactive experiments</p>
         </section>
 
-        {/* Stats Grid */}
         <section aria-labelledby="stats-overview" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           <h2 id="stats-overview" className="sr-only">User Progress Overview</h2>
           <StatsCard title="Total Experiments" value={progress?.total_experiments || 0} icon="📊" color="bg-blue-50" />
@@ -105,7 +101,6 @@ export default function DashboardContent({ user }: { user: User }) {
           />
         </section>
 
-        {/* Experiments Section */}
         <section aria-labelledby="available-experiments" className="mb-8">
           <h3 id="available-experiments" className="text-xl font-bold text-gray-900 mb-4">
             Available Experiments
@@ -119,7 +114,6 @@ export default function DashboardContent({ user }: { user: User }) {
           </div>
         </section>
 
-        {/* Quick Actions */}
         <section aria-labelledby="quick-actions" className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <h3 id="quick-actions" className="sr-only">Quick Access</h3>
 

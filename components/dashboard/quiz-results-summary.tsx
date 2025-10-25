@@ -76,7 +76,6 @@ export function QuizResultsSummary({ user }: { user: User }) {
 
   return (
     <div className="space-y-4">
-      {/* Overall Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card className="p-6 bg-gradient-to-br from-blue-500 to-cyan-500 border-0 text-white shadow-lg">
           <p className="text-sm font-medium text-blue-100 mb-2">Total Nilai</p>
@@ -97,7 +96,6 @@ export function QuizResultsSummary({ user }: { user: User }) {
         </Card>
       </div>
 
-      {/* Detailed Results - CLICKABLE */}
       <Card className="p-6 bg-white border-0 shadow-md">
         <h3 className="text-lg font-bold text-gray-900 mb-4">Detail Hasil</h3>
         <div className="space-y-3">

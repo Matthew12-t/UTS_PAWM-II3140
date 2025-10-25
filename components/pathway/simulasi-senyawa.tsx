@@ -35,14 +35,12 @@ export default function SimulasiSenyawa({ pathway, user }: SimulasiSenyawaProps)
     Carbon: "#a8a8a8",
   };
 
-  // 💡 Ukuran atom (diameter px): lebih besar biar visualnya tegas
   const elementSizes: Record<string, number> = {
     Hydrogen: 100,
     Oxygen: 140,
     Carbon: 180,
   };
 
-  // --- Hitung ambang interaksi dinamis berdasarkan ukuran atom ---
   const radii = useMemo(() => {
     const rL = elementSizes[leftElement] / 2;
     const rR = elementSizes[rightElement] / 2;
@@ -51,7 +49,7 @@ export default function SimulasiSenyawa({ pathway, user }: SimulasiSenyawaProps)
 
   const thresholds = useMemo(() => {
     const buffer = 10;
-    const repulsiveD = radii.rL + radii.rR + buffer; // makin besar atom → makin cepat repulsive
+    const repulsiveD = radii.rL + radii.rR + buffer; 
     const noInteractionD = repulsiveD * 2.6;
     return { repulsiveD, noInteractionD };
   }, [radii]);
@@ -68,7 +66,6 @@ export default function SimulasiSenyawa({ pathway, user }: SimulasiSenyawaProps)
     const clamped = Math.min(maxD, Math.max(minD, distance));
     setDistance(clamped);
     setInteraction(classify(clamped));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [leftElement, rightElement, thresholds.repulsiveD, thresholds.noInteractionD]);
 
   const handleMove = (delta: number) => {
@@ -115,7 +112,6 @@ export default function SimulasiSenyawa({ pathway, user }: SimulasiSenyawaProps)
   return (
     <article className="space-y-6 mt-6">
       <div className="flex gap-6 items-stretch min-h-[400px]">
-        {/* KIRI: POTENTIAL ENERGY BAR */}
         <section className="bg-white rounded-lg shadow-xl p-4 w-[120px] h-[350px] flex flex-col items-center">
           <h3 className="text-xs font-semibold text-gray-800 mb-3 text-center">
             Potential Energy
@@ -141,9 +137,7 @@ export default function SimulasiSenyawa({ pathway, user }: SimulasiSenyawaProps)
           <p className="text-xs text-gray-600 mt-2 text-center">Energy Level</p>
         </section>
 
-        {/* TENGAH: AREA SIMULASI */}
         <section className="relative bg-black rounded-lg shadow-xl w-[550px] h-[380px] overflow-hidden flex flex-col items-center justify-center">
-          {/* Atom kiri */}
           <motion.div
             animate={{ x: -distance / 2 }}
             transition={{ type: "spring", stiffness: 100, damping: 10 }}
@@ -159,7 +153,6 @@ export default function SimulasiSenyawa({ pathway, user }: SimulasiSenyawaProps)
             </span>
           </motion.div>
 
-          {/* Atom kanan */}
           <motion.div
             animate={{ x: distance / 2 }}
             transition={{ type: "spring", stiffness: 100, damping: 10 }}
@@ -175,7 +168,6 @@ export default function SimulasiSenyawa({ pathway, user }: SimulasiSenyawaProps)
             </span>
           </motion.div>
 
-          {/* Status Interaksi */}
           <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-center">
             <p className="text-yellow-300 text-sm mb-1">Overall interaction:</p>
             <p
@@ -192,7 +184,6 @@ export default function SimulasiSenyawa({ pathway, user }: SimulasiSenyawaProps)
           </div>
         </section>
 
-        {/* KANAN: KONTROL */}
         <section className="bg-white rounded-lg shadow-xl p-6 w-[260px] h-[300px] flex flex-col gap-4 mt-7">
           <div>
             <h3 className="text-sm font-semibold text-gray-800 mb-2">

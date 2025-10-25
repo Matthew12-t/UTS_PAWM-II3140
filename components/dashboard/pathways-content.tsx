@@ -51,7 +51,6 @@ export default function PathwaysContent({ user }: { user: User }) {
     fetchPathways()
     fetchUserProgress()
 
-    // Refresh when page becomes visible again
     const handleVisibilityChange = () => {
       if (document.visibilityState === 'visible') {
         console.log('[PathwaysContent] Page visible, refreshing progress...')
@@ -166,7 +165,6 @@ export default function PathwaysContent({ user }: { user: User }) {
           <QuizResultsSummary user={user} />
         </div>
 
-        {/* Chemical Bonding Title Section */}
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-1 h-8 bg-gradient-to-b from-indigo-400 to-blue-400 rounded-full"></div>
@@ -183,15 +181,12 @@ export default function PathwaysContent({ user }: { user: User }) {
           </div>
         ) : (
           <div className="space-y-6 relative">
-            {/* Timeline line */}
             <div className="absolute left-7 top-0 bottom-0 w-1 bg-gradient-to-b from-indigo-400 via-blue-400 to-cyan-400 rounded-full"></div>
 
-            {/* Pathway cards in vertical layout */}
             {pathways.map((pathway, index) => {
               const locked = isPathwayLocked(pathway.order_number)
               return (
                 <div key={pathway.id} className="relative pl-20">
-                  {/* Timeline dot */}
                   <div className="absolute left-0 top-6 w-16 h-16 -ml-8 flex items-center justify-center">
                     <div
                       className={`w-16 h-16 rounded-full border-4 flex items-center justify-center shadow-lg font-bold text-lg ${
@@ -204,7 +199,6 @@ export default function PathwaysContent({ user }: { user: User }) {
                     </div>
                   </div>
 
-                  {/* Pathway Card */}
                   <PathwayCard pathway={pathway} user={user} isLocked={locked} />
                 </div>
               )
@@ -213,7 +207,6 @@ export default function PathwaysContent({ user }: { user: User }) {
         )}
       </section>
 
-      {/* Footer */}
       <footer className="relative z-10 bg-black/30 backdrop-blur-md border-t border-white/20 mt-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 text-center">
           <p className="text-white font-semibold">ChemLab - Virtual Chemistry Laboratory</p>

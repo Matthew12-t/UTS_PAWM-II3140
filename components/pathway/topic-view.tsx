@@ -17,15 +17,12 @@ interface TopicViewProps {
   }
 }
 
-// Fungsi untuk mendapatkan default YouTube video ID berdasarkan pathway ID
 function getVideoIdByPathwayId(pathwayId: number): string {
-  // Mapping video berdasarkan pathway ID
   const videoMapping: { [key: number]: string } = {
     1: '7rodnBMRdCw', // Pathway ID 1 (Topik 1) - Ikatan Kimia
     4: '5x_2ctPpArM', // Pathway ID 4 (Topik 2) - Video Topik 2
-    // Tambahkan mapping untuk pathway ID lainnya di sini
   }
-  return videoMapping[pathwayId] || 'dQw4w9WgXcQ' // Default video jika tidak ada mapping
+  return videoMapping[pathwayId] || 'dQw4w9WgXcQ' 
 }
 
 export default function TopicView({ pathway }: TopicViewProps) {
@@ -38,8 +35,7 @@ export default function TopicView({ pathway }: TopicViewProps) {
     
     try {
       console.log('[Client] Completing pathway:', pathway.id)
-      
-      // Update progress pembelajaran
+
       const response = await fetch('/api/progress', {
         method: 'POST',
         headers: {
@@ -62,16 +58,15 @@ export default function TopicView({ pathway }: TopicViewProps) {
 
       console.log('[Client] Success!')
 
-      // Jika ada pathway selanjutnya, redirect ke sana
       if (data.nextPathwayId) {
         console.log('[Client] Navigating to next pathway:', data.nextPathwayId)
         router.push(`/pathway/${data.nextPathwayId}`)
-        router.refresh() // Force refresh untuk update data
+        router.refresh() 
       } else {
-        // Jika tidak ada pathway selanjutnya, kembali ke dashboard
+
         console.log('[Client] No next pathway, going to dashboard')
         router.push('/dashboard')
-        router.refresh() // Force refresh untuk update data
+        router.refresh() 
       }
     } catch (error) {
       console.error('[Client] Error:', error)
@@ -90,7 +85,6 @@ export default function TopicView({ pathway }: TopicViewProps) {
         </Card>
       </header>
 
-      {/* YouTube Video Card */}
       <Card className="p-6">
         <h3 className="text-xl font-semibold text-gray-900 mb-4">Video Pembelajaran</h3>
         <div className="bg-gray-100 rounded-lg overflow-hidden">
@@ -123,7 +117,6 @@ export default function TopicView({ pathway }: TopicViewProps) {
         </section>
       ))}
 
-      {/* Image Card - Only for Topik 1: Ikatan Kimia */}
       {pathway.id === 1 && (
         <Card className="p-6">
           <h3 className="text-xl font-semibold text-gray-900 mb-4">Perbandingan Ikatan Kimia</h3>

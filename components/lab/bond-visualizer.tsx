@@ -18,16 +18,13 @@ export function BondVisualizer({ atom1, atom2 }: BondVisualizerProps) {
     const ctx = canvas.getContext("2d")
     if (!ctx) return
 
-    // Clear canvas
     ctx.fillStyle = "#f8fafc"
     ctx.fillRect(0, 0, canvas.width, canvas.height)
 
-    // Draw atoms
     const atom1X = 80
     const atom2X = canvas.width - 80
     const centerY = canvas.height / 2
 
-    // Atom 1
     ctx.fillStyle = "#3b82f6"
     ctx.beginPath()
     ctx.arc(atom1X, centerY, 30, 0, Math.PI * 2)
@@ -38,7 +35,6 @@ export function BondVisualizer({ atom1, atom2 }: BondVisualizerProps) {
     ctx.textBaseline = "middle"
     ctx.fillText(atom1, atom1X, centerY)
 
-    // Atom 2
     ctx.fillStyle = "#ec4899"
     ctx.beginPath()
     ctx.arc(atom2X, centerY, 30, 0, Math.PI * 2)
@@ -46,7 +42,6 @@ export function BondVisualizer({ atom1, atom2 }: BondVisualizerProps) {
     ctx.fillStyle = "#ffffff"
     ctx.fillText(atom2, atom2X, centerY)
 
-    // Bond line
     ctx.strokeStyle = "#8b5cf6"
     ctx.lineWidth = 3
     ctx.beginPath()
@@ -54,7 +49,6 @@ export function BondVisualizer({ atom1, atom2 }: BondVisualizerProps) {
     ctx.lineTo(atom2X - 30, centerY)
     ctx.stroke()
 
-    // Electrons
     const electronCount = 4
     for (let i = 0; i < electronCount; i++) {
       const x = atom1X + 50 + (i * (atom2X - atom1X - 100)) / (electronCount - 1)

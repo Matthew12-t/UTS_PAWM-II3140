@@ -141,7 +141,6 @@ export default function LabSimulator({
 
     setResults([...results, result])
 
-    // Save to database
     if (sessionId) {
       supabase.from("lab_results").insert({
         session_id: sessionId,
@@ -165,7 +164,6 @@ export default function LabSimulator({
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
-      {/* Header */}
       <header className="bg-white border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
           <div>
@@ -185,10 +183,8 @@ export default function LabSimulator({
         </div>
       </header>
 
-      {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Left Panel - Atom Selection */}
           <div className="lg:col-span-2 space-y-6">
             <Card className="p-6">
               <h2 className="text-xl font-bold text-gray-900 mb-4">Select Atoms</h2>
@@ -212,11 +208,9 @@ export default function LabSimulator({
               </Button>
             </Card>
 
-            {/* Bond Visualizer */}
             {selectedAtom1 && selectedAtom2 && <BondVisualizer atom1={selectedAtom1} atom2={selectedAtom2} />}
           </div>
 
-          {/* Right Panel - Results */}
           <div>
             <ResultsPanel results={results} experimentType={experimentType} />
           </div>

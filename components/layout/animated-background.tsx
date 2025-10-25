@@ -1,7 +1,6 @@
 export function AnimatedBackground() {
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      {/* Floating icons background */}
       <div className="absolute top-10 left-10 text-6xl opacity-10 animate-pulse">⚛️</div>
       <div className="absolute top-32 right-20 text-5xl opacity-10 animate-pulse" style={{ animationDelay: "1s" }}>
         🧪
@@ -16,7 +15,6 @@ export function AnimatedBackground() {
         🧬
       </div>
 
-      {/* Gradient orbs */}
       <div className="absolute top-0 left-1/4 w-96 h-96 bg-indigo-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse"></div>
       <div
         className="absolute top-0 right-1/4 w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse"

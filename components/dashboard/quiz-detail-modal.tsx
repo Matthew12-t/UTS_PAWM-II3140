@@ -35,10 +35,8 @@ export function QuizDetailModal({ isOpen, onClose, pathwayId, user, pathwayTitle
     const fetchAnswers = async () => {
       setLoading(true)
 
-      // Fetch pathway content to get questions
       const { data: pathwayData } = await supabase.from("pathways").select("content").eq("id", pathwayId).single()
 
-      // Fetch user answers
       const { data: answersData } = await supabase
         .from("quiz_answers")
         .select("*")
