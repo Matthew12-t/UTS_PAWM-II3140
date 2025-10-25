@@ -6,9 +6,10 @@ import { createClient } from "@/lib/supabase/client"
 import { UserMenu } from "@/components/dashboard/user-menu"
 import Link from "next/link"
 import TopicView from "./topic-view"
-import SimulationView from "./simulation-view"
 import QuizView from "./quiz-view"
 import FinalTestView from "./final-test-view"
+import SimulasiSenyawa from "./simulasi-senyawa"
+import SimulasiPembentukanIkatan from "./simulasi-pembentukan-ikatan"
 
 interface Pathway {
   id: number
@@ -48,11 +49,22 @@ export default function PathwayContent({ user, pathway }: { user: User; pathway:
   }, [pathway.id, user.id, supabase])
 
   const renderContent = () => {
+    // Routing khusus untuk simulasi berdasarkan judul
+    if (pathway.type === "simulation") {
+      if (pathway.title.includes("Simulasi Senyawa")) {
+        return <SimulasiSenyawa pathway={pathway} user={user} />
+      }
+      if (pathway.title.includes("Simulasi Pembentukan Ikatan Kimia")) {
+        return <SimulasiPembentukanIkatan pathway={pathway} user={user} />
+      }
+      // Jika tidak ada simulasi yang match, tampilkan error
+      return <div className="text-red-600">Simulasi tidak ditemukan: {pathway.title}</div>
+    }
+
+    // Routing untuk pathway type lainnya
     switch (pathway.type) {
       case "topic":
         return <TopicView pathway={pathway} />
-      case "simulation":
-        return <SimulationView pathway={pathway} user={user} />
       case "quiz":
         return <QuizView pathway={pathway} user={user} />
       case "final_test":
