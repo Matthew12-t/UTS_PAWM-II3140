@@ -17,6 +17,17 @@ interface TopicViewProps {
   }
 }
 
+// Fungsi untuk mendapatkan default YouTube video ID berdasarkan pathway ID
+function getVideoIdByPathwayId(pathwayId: number): string {
+  // Mapping video berdasarkan pathway ID
+  const videoMapping: { [key: number]: string } = {
+    1: '7rodnBMRdCw', // Pathway ID 1 (Topik 1) - Ikatan Kimia
+    4: '5x_2ctPpArM', // Pathway ID 4 (Topik 2) - Video Topik 2
+    // Tambahkan mapping untuk pathway ID lainnya di sini
+  }
+  return videoMapping[pathwayId] || 'dQw4w9WgXcQ' // Default video jika tidak ada mapping
+}
+
 export default function TopicView({ pathway }: TopicViewProps) {
   const sections = pathway.content?.sections || []
   const [isCompleting, setIsCompleting] = useState(false)
@@ -79,10 +90,28 @@ export default function TopicView({ pathway }: TopicViewProps) {
         </Card>
       </header>
 
+      {/* YouTube Video Card */}
+      <Card className="p-6">
+        <h3 className="text-xl font-semibold text-gray-900 mb-4">Video Pembelajaran</h3>
+        <div className="bg-gray-100 rounded-lg overflow-hidden">
+          <div className="relative aspect-video">
+            <iframe
+              className="absolute inset-0 w-full h-full"
+              src={`https://www.youtube.com/embed/${getVideoIdByPathwayId(pathway.id)}`}
+              title="Video Pembelajaran"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
+          </div>
+        </div>
+      </Card>
+
       {sections.map((section: any, index: number) => (
         <section key={index}>
           <Card className="p-6">
             <h3 className="text-xl font-semibold text-gray-900 mb-4">{section.title}</h3>
+            
             <div className="prose prose-sm max-w-none">
               {section.content.split("\n").map((line: string, i: number) => (
                 <p key={i} className="text-gray-700 mb-2 whitespace-pre-wrap">
