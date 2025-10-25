@@ -64,14 +64,51 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">ChemLab</h1>
-          <p className="text-gray-600">Virtual Chemistry Laboratory</p>
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-indigo-900 to-slate-900 relative overflow-hidden">
+      {/* Background decorations - same as homepage */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {/* Floating icons background */}
+        <div className="absolute top-10 left-10 text-6xl opacity-10 animate-pulse">⚛️</div>
+        <div className="absolute top-32 right-20 text-5xl opacity-10 animate-pulse" style={{ animationDelay: "1s" }}>
+          🧪
+        </div>
+        <div className="absolute bottom-32 left-20 text-6xl opacity-10 animate-pulse" style={{ animationDelay: "2s" }}>
+          🔬
+        </div>
+        <div
+          className="absolute bottom-20 right-32 text-5xl opacity-10 animate-pulse"
+          style={{ animationDelay: "1.5s" }}
+        >
+          ⚗️
+        </div>
+        <div className="absolute top-1/2 left-1/3 text-7xl opacity-5 animate-pulse" style={{ animationDelay: "0.5s" }}>
+          🧬
         </div>
 
-        <Card className="p-8 shadow-lg">
+        {/* Gradient orbs */}
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-indigo-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse"></div>
+        <div
+          className="absolute top-0 right-1/4 w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse"
+          style={{ animationDelay: "2s" }}
+        ></div>
+        <div
+          className="absolute bottom-0 left-1/2 w-96 h-96 bg-cyan-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse"
+          style={{ animationDelay: "1s" }}
+        ></div>
+      </div>
+
+      {/* Content */}
+      <div className="relative z-10 flex items-center justify-center min-h-screen p-4">
+      <div className="w-full max-w-md">
+        <div className="text-center mb-8">
+          <div className="flex items-center justify-center gap-2 mb-4">
+            <span className="text-4xl">⚛️</span>
+            <h1 className="text-4xl font-bold text-white">ChemLab</h1>
+          </div>
+          <p className="text-indigo-200">Virtual Chemistry Laboratory</p>
+        </div>
+
+        <Card className="p-8 shadow-lg bg-white/95 backdrop-blur-sm">
           <form onSubmit={handleLogin} className="space-y-6">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
@@ -152,6 +189,7 @@ export default function LoginPage() {
             </p>
           </div>
         </Card>
+      </div>
       </div>
     </div>
   )

@@ -134,7 +134,7 @@ export default function PathwaysContent({ user }: { user: User }) {
       <section className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <header className="mb-12">
           <h2 className="text-4xl font-bold text-white mb-2">
-            Selamat datang kembali, {user.user_metadata?.full_name || "Siswa"}!
+            Selamat datang, {user.user_metadata?.full_name || "Siswa"}!
           </h2>
           <p className="text-lg text-indigo-100">
             Lanjutkan perjalanan belajar kimia Anda dengan materi Chemical Bonding
@@ -212,6 +212,16 @@ export default function PathwaysContent({ user }: { user: User }) {
           </div>
         )}
       </section>
+
+      {/* Footer */}
+      <footer className="relative z-10 bg-black/30 backdrop-blur-md border-t border-white/20 mt-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 text-center">
+          <p className="text-white font-semibold">ChemLab - Virtual Chemistry Laboratory</p>
+          <p className="text-indigo-200 text-sm mt-2">
+            Learn chemistry through interactive experiments and simulations
+          </p>
+        </div>
+      </footer>
     </main>
   )
 }

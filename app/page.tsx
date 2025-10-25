@@ -84,33 +84,6 @@ export default function HomePage() {
           </Link>
         </div>
 
-        {/* Features Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-          <Card className="p-6 text-center hover:shadow-lg transition-all bg-white/10 backdrop-blur-md border-white/20 hover:border-indigo-400 group cursor-pointer">
-            <div className="text-5xl mb-3 group-hover:scale-110 transition-transform">⚛️</div>
-            <h3 className="font-semibold text-white mb-2">Ionic Bonding</h3>
-            <p className="text-sm text-indigo-100">Explore electron transfer between atoms</p>
-          </Card>
-
-          <Card className="p-6 text-center hover:shadow-lg transition-all bg-white/10 backdrop-blur-md border-white/20 hover:border-blue-400 group cursor-pointer">
-            <div className="text-5xl mb-3 group-hover:scale-110 transition-transform">🔗</div>
-            <h3 className="font-semibold text-white mb-2">Covalent Bonding</h3>
-            <p className="text-sm text-indigo-100">Discover electron sharing patterns</p>
-          </Card>
-
-          <Card className="p-6 text-center hover:shadow-lg transition-all bg-white/10 backdrop-blur-md border-white/20 hover:border-cyan-400 group cursor-pointer">
-            <div className="text-5xl mb-3 group-hover:scale-110 transition-transform">✨</div>
-            <h3 className="font-semibold text-white mb-2">Metallic Bonding</h3>
-            <p className="text-sm text-indigo-100">Understand the sea of electrons</p>
-          </Card>
-
-          <Card className="p-6 text-center hover:shadow-lg transition-all bg-white/10 backdrop-blur-md border-white/20 hover:border-purple-400 group cursor-pointer">
-            <div className="text-5xl mb-3 group-hover:scale-110 transition-transform">💧</div>
-            <h3 className="font-semibold text-white mb-2">Hydrogen Bonding</h3>
-            <p className="text-sm text-indigo-100">Learn intermolecular forces</p>
-          </Card>
-        </div>
-
         {/* Benefits */}
         <div className="bg-white/10 backdrop-blur-md rounded-lg p-12 shadow-lg border border-white/20">
           <h3 className="text-2xl font-bold text-white mb-8 text-center">Why Choose ChemLab?</h3>
@@ -145,12 +118,6 @@ export default function HomePage() {
           <p className="text-indigo-200 text-sm mt-2">
             Learn chemistry through interactive experiments and simulations
           </p>
-          <div className="flex justify-center gap-6 mt-6 text-2xl">
-            <span>⚛️</span>
-            <span>🧪</span>
-            <span>🔬</span>
-            <span>⚗️</span>
-          </div>
         </div>
       </footer>
     </div>

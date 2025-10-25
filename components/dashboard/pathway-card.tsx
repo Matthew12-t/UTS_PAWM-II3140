@@ -175,7 +175,7 @@ export function PathwayCard({ pathway, user, isLocked = false }: PathwayCardProp
             }`}
             disabled={isLocked}
           >
-            {progress?.status === "completed" ? "Lihat Hasil" : "Mulai Sekarang"}
+            {progress?.status === "completed" ? "Ulangi" : "Mulai Sekarang"}
           </Button>
         </div>
       </Card>

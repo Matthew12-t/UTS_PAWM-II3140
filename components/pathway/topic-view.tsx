@@ -123,6 +123,23 @@ export default function TopicView({ pathway }: TopicViewProps) {
         </section>
       ))}
 
+      {/* Image Card - Only for Topik 1: Ikatan Kimia */}
+      {pathway.id === 1 && (
+        <Card className="p-6">
+          <h3 className="text-xl font-semibold text-gray-900 mb-4">Perbandingan Ikatan Kimia</h3>
+          <div className="bg-gray-50 rounded-lg overflow-hidden">
+            <img
+              src="/images/ikatan-kimia.jpg"
+              alt="Ilustrasi Ikatan Kimia"
+              className="w-full h-auto object-contain"
+            />
+          </div>
+          <p className="text-sm text-gray-600 mt-2 text-center">
+            Tabel Perbandingan Ikatan Kimia
+          </p>
+        </Card>
+      )}
+
       <nav className="flex gap-4 pt-6">
         <Link href="/dashboard" className="flex-1">
           <Button variant="outline" className="w-full bg-transparent">

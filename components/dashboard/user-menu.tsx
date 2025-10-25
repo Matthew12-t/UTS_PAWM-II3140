@@ -18,8 +18,8 @@ export function UserMenu({ user }: { user: User }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" className="rounded-full bg-transparent">
-          <div className="w-8 h-8 bg-indigo-600 rounded-full flex items-center justify-center text-white font-semibold">
+        <Button variant="ghost" className="rounded-full bg-transparent hover:bg-transparent p-0">
+          <div className="w-10 h-10 bg-indigo-600 rounded-full flex items-center justify-center text-white font-semibold text-lg">
             {user.user_metadata?.full_name?.charAt(0) || "U"}
           </div>
         </Button>
