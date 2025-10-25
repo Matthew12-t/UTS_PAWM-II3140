@@ -19,8 +19,8 @@ interface TopicViewProps {
 
 function getVideoIdByPathwayId(pathwayId: number): string {
   const videoMapping: { [key: number]: string } = {
-    1: '7rodnBMRdCw', // Pathway ID 1 (Topik 1) - Ikatan Kimia
-    4: '5x_2ctPpArM', // Pathway ID 4 (Topik 2) - Video Topik 2
+    1: '7rodnBMRdCw', // Pathway (Topik 1) - Ikatan Kimia
+    4: '5x_2ctPpArM', // Pathway (Topik 2) - Video Topik 2
   }
   return videoMapping[pathwayId] || 'dQw4w9WgXcQ' 
 }

@@ -18,7 +18,6 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    // Check if progress exists
     const { data: existingProgress } = await supabase
       .from('user_pathway_progress')
       .select('id, status')
@@ -31,7 +30,6 @@ export async function POST(request: Request) {
     let progressResult
 
     if (existingProgress) {
-      // Update existing progress
       const updateData: any = {
         status: status || 'completed',
         updated_at: new Date().toISOString()
@@ -86,24 +84,21 @@ export async function POST(request: Request) {
       )
     }
 
-    // Update overall user_progress statistics
+    // Update user_progress
     const wasNotCompleted = !existingProgress || existingProgress.status !== 'completed'
     const isNowCompleted = status === 'completed'
     
     if (wasNotCompleted && isNowCompleted) {
-      // Get total pathways count
       const { count: totalPathways } = await supabase
         .from('pathways')
         .select('*', { count: 'exact', head: true })
 
-      // Get completed pathways count
       const { count: completedPathways } = await supabase
         .from('user_pathway_progress')
         .select('*', { count: 'exact', head: true })
         .eq('user_id', user.id)
         .eq('status', 'completed')
-
-      // Get average score
+        
       const { data: progressData } = await supabase
         .from('user_pathway_progress')
         .select('score')
@@ -122,7 +117,6 @@ export async function POST(request: Request) {
         averageScore 
       })
 
-      // Check if user_progress exists
       const { data: existingUserProgress } = await supabase
         .from('user_progress')
         .select('id')
@@ -130,7 +124,6 @@ export async function POST(request: Request) {
         .maybeSingle()
 
       if (existingUserProgress) {
-        // Update existing user_progress
         await supabase
           .from('user_progress')
           .update({
@@ -142,7 +135,6 @@ export async function POST(request: Request) {
           })
           .eq('id', existingUserProgress.id)
       } else {
-        // Insert new user_progress
         await supabase
           .from('user_progress')
           .insert({
@@ -157,7 +149,6 @@ export async function POST(request: Request) {
       console.log('[API] User progress updated successfully')
     }
 
-    // Cari pathway selanjutnya berdasarkan order_number
     const { data: currentPathway } = await supabase
       .from('pathways')
       .select('order_number')

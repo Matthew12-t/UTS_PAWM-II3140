@@ -125,11 +125,11 @@ export default function QuizView({ pathway, user }: QuizViewProps) {
       if (data.nextPathwayId) {
         console.log('[Client] Going to next pathway:', data.nextPathwayId)
         router.push(`/pathway/${data.nextPathwayId}`)
-        router.refresh() // Force refresh untuk update data
+        router.refresh() 
       } else {
         console.log('[Client] No next pathway, going to dashboard')
         router.push('/dashboard')
-        router.refresh() // Force refresh untuk update data
+        router.refresh() 
       }
     } catch (error) {
       console.error('[Client] Error:', error)

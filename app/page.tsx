@@ -6,7 +6,6 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-indigo-900 to-slate-900 relative overflow-hidden">
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Floating icons background */}
         <div className="absolute top-10 left-10 text-6xl opacity-10 animate-pulse">⚛️</div>
         <div className="absolute top-32 right-20 text-5xl opacity-10 animate-pulse" style={{ animationDelay: "1s" }}>
           🧪
@@ -24,7 +23,6 @@ export default function HomePage() {
           🧬
         </div>
 
-        {/* Gradient orbs */}
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-indigo-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse"></div>
         <div
           className="absolute top-0 right-1/4 w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse"
@@ -36,7 +34,6 @@ export default function HomePage() {
         ></div>
       </div>
 
-      {/* Navigation */}
       <nav className="relative z-10 bg-white/10 backdrop-blur-md border-b border-white/20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -56,7 +53,6 @@ export default function HomePage() {
         </div>
       </nav>
 
-      {/* Hero Section */}
       <section className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="text-center mb-16">
           <div className="flex justify-center gap-4 mb-6 text-5xl">
@@ -84,7 +80,6 @@ export default function HomePage() {
           </Link>
         </div>
 
-        {/* Benefits */}
         <div className="bg-white/10 backdrop-blur-md rounded-lg p-12 shadow-lg border border-white/20">
           <h3 className="text-2xl font-bold text-white mb-8 text-center">Why Choose ChemLab?</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -111,7 +106,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Footer */}
       <footer className="relative z-10 bg-black/30 backdrop-blur-md border-t border-white/20 mt-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 text-center">
           <p className="text-white font-semibold">ChemLab - Virtual Chemistry Laboratory</p>

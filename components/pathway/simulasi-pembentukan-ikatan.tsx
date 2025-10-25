@@ -106,7 +106,7 @@ export default function SimulasiPembentukanIkatan({
       const rect = canvas.getBoundingClientRect();
       const x = e.clientX - rect.left;
       pointer.target.x = Math.max(30, Math.min(W - 30, x - pointer.ox));
-      pointer.target.y = midY; // fix vertikal
+      pointer.target.y = midY; 
     });
 
     const stopDrag = () => {
