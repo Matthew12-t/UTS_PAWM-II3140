@@ -22,11 +22,14 @@ interface QuizAnswer {
   explanation: string
   question_text: string
   options: string[]
+  created_at?: string
 }
 
 export function QuizDetailModal({ isOpen, onClose, pathwayId, user, pathwayTitle }: QuizDetailModalProps) {
   const [answers, setAnswers] = useState<QuizAnswer[]>([])
+  const [groupedAnswers, setGroupedAnswers] = useState<QuizAnswer[][]>([])
   const [loading, setLoading] = useState(true)
+  const [selectedAttempt, setSelectedAttempt] = useState(0)
   const supabase = createClient()
 
   useEffect(() => {
@@ -42,6 +45,7 @@ export function QuizDetailModal({ isOpen, onClose, pathwayId, user, pathwayTitle
         .select("*")
         .eq("pathway_id", pathwayId)
         .eq("user_id", user.id)
+        .order("created_at", { ascending: true })
 
       if (pathwayData && answersData) {
         const questions = pathwayData.content?.questions || []
@@ -55,9 +59,19 @@ export function QuizDetailModal({ isOpen, onClose, pathwayId, user, pathwayTitle
             explanation: answer.explanation,
             question_text: question?.question || "Pertanyaan tidak ditemukan",
             options: question?.options || [],
+            created_at: answer.created_at
           }
         })
-        setAnswers(formattedAnswers)
+
+        const grouped: QuizAnswer[][] = []
+        const questionsPerAttempt = questions.length
+        
+        for (let i = 0; i < formattedAnswers.length; i += questionsPerAttempt) {
+          grouped.push(formattedAnswers.slice(i, i + questionsPerAttempt))
+        }
+
+        setGroupedAnswers(grouped)
+        setSelectedAttempt(grouped.length > 0 ? grouped.length - 1 : 0)
       }
 
       setLoading(false)
@@ -74,16 +88,34 @@ export function QuizDetailModal({ isOpen, onClose, pathwayId, user, pathwayTitle
         <div className="bg-gradient-to-r from-indigo-600 to-blue-600 text-white p-6 border-b z-10 flex-shrink-0">
           <h2 className="text-2xl font-bold">{pathwayTitle}</h2>
           <p className="text-indigo-100 text-sm mt-1">Pembahasan Jawaban Anda</p>
+          
+          {groupedAnswers.length > 1 && (
+            <div className="mt-4 flex gap-2 flex-wrap">
+              {groupedAnswers.map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setSelectedAttempt(idx)}
+                  className={`px-3 py-1 rounded-full text-sm font-semibold transition-all ${
+                    selectedAttempt === idx
+                      ? "bg-white text-indigo-600"
+                      : "bg-indigo-400 hover:bg-indigo-300 text-white"
+                  }`}
+                >
+                  Percobaan {idx + 1}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
         <div className="flex-1 overflow-y-auto p-6 space-y-6">
           {loading ? (
             <p className="text-center text-gray-600">Memuat pembahasan...</p>
-          ) : answers.length === 0 ? (
+          ) : groupedAnswers.length === 0 ? (
             <p className="text-center text-gray-600">Tidak ada jawaban yang ditemukan</p>
           ) : (
-            answers.map((answer, index) => (
-              <div key={answer.question_id} className="border-l-4 border-indigo-500 pl-4 py-4">
+            groupedAnswers[selectedAttempt].map((answer, index) => (
+              <div key={`${selectedAttempt}-${answer.question_id}`} className="border-l-4 border-indigo-500 pl-4 py-4">
                 <div className="flex items-start justify-between mb-3">
                   <h3 className="font-semibold text-gray-900 flex-1">
                     Pertanyaan {index + 1}: {answer.question_text}
