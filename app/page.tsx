@@ -34,8 +34,8 @@ export default function HomePage() {
         ></div>
       </div>
 
-      <nav className="relative z-10 bg-white/10 backdrop-blur-md border-b border-white/20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
+      <header className="relative z-10 bg-white/10 backdrop-blur-md border-b border-white/20">
+        <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <span className="text-3xl">⚛️</span>
             <h1 className="text-2xl font-bold text-white">ChemLab</h1>
@@ -50,61 +50,63 @@ export default function HomePage() {
               <Button className="bg-indigo-600 hover:bg-indigo-700 text-white">Get Started</Button>
             </Link>
           </div>
-        </div>
-      </nav>
+        </nav>
+      </header>
 
-      <section className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div className="text-center mb-16">
-          <div className="flex justify-center gap-4 mb-6 text-5xl">
-            <span className="animate-bounce" style={{ animationDelay: "0s" }}>
-              ⚛️
-            </span>
-            <span className="animate-bounce" style={{ animationDelay: "0.2s" }}>
-              🧪
-            </span>
-            <span className="animate-bounce" style={{ animationDelay: "0.4s" }}>
-              🔬
-            </span>
+      <main className="relative z-10">
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+          <div className="text-center mb-16">
+            <div className="flex justify-center gap-4 mb-6 text-5xl">
+              <span className="animate-bounce" style={{ animationDelay: "0s" }}>
+                ⚛️
+              </span>
+              <span className="animate-bounce" style={{ animationDelay: "0.2s" }}>
+                🧪
+              </span>
+              <span className="animate-bounce" style={{ animationDelay: "0.4s" }}>
+                🔬
+              </span>
+            </div>
+            <h2 className="text-5xl md:text-6xl font-bold text-white mb-4 text-balance">
+              Learn Chemistry Through Interactive Experiments
+            </h2>
+            <p className="text-xl text-indigo-100 mb-8 max-w-2xl mx-auto text-balance">
+              Master chemical bonding with our virtual lab. Explore ionic, covalent, metallic, and hydrogen bonding
+              through hands-on simulations and interactive learning.
+            </p>
+            <Link href="/auth/signup">
+              <Button size="lg" className="bg-indigo-600 hover:bg-indigo-700 text-white">
+                Start Learning Now
+              </Button>
+            </Link>
           </div>
-          <h2 className="text-5xl md:text-6xl font-bold text-white mb-4 text-balance">
-            Learn Chemistry Through Interactive Experiments
-          </h2>
-          <p className="text-xl text-indigo-100 mb-8 max-w-2xl mx-auto text-balance">
-            Master chemical bonding with our virtual lab. Explore ionic, covalent, metallic, and hydrogen bonding
-            through hands-on simulations and interactive learning.
-          </p>
-          <Link href="/auth/signup">
-            <Button size="lg" className="bg-indigo-600 hover:bg-indigo-700 text-white">
-              Start Learning Now
-            </Button>
-          </Link>
-        </div>
 
-        <div className="bg-white/10 backdrop-blur-md rounded-lg p-12 shadow-lg border border-white/20">
-          <h3 className="text-2xl font-bold text-white mb-8 text-center">Why Choose ChemLab?</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="text-center">
-              <div className="text-5xl mb-3">🎯</div>
-              <h4 className="font-semibold text-white mb-2">Interactive Learning</h4>
-              <p className="text-indigo-100">
-                Engage with chemistry through hands-on virtual experiments and simulations
-              </p>
+          <section className="bg-white/10 backdrop-blur-md rounded-lg p-12 shadow-lg border border-white/20">
+            <h3 className="text-2xl font-bold text-white mb-8 text-center">Why Choose ChemLab?</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <article className="text-center">
+                <div className="text-5xl mb-3">🎯</div>
+                <h4 className="font-semibold text-white mb-2">Interactive Learning</h4>
+                <p className="text-indigo-100">
+                  Engage with chemistry through hands-on virtual experiments and simulations
+                </p>
+              </article>
+              <article className="text-center">
+                <div className="text-5xl mb-3">📊</div>
+                <h4 className="font-semibold text-white mb-2">Track Progress</h4>
+                <p className="text-indigo-100">
+                  Monitor your learning journey with detailed analytics and performance metrics
+                </p>
+              </article>
+              <article className="text-center">
+                <div className="text-5xl mb-3">🏆</div>
+                <h4 className="font-semibold text-white mb-2">Earn Scores</h4>
+                <p className="text-indigo-100">Get instant feedback and build your chemistry knowledge with quizzes</p>
+              </article>
             </div>
-            <div className="text-center">
-              <div className="text-5xl mb-3">📊</div>
-              <h4 className="font-semibold text-white mb-2">Track Progress</h4>
-              <p className="text-indigo-100">
-                Monitor your learning journey with detailed analytics and performance metrics
-              </p>
-            </div>
-            <div className="text-center">
-              <div className="text-5xl mb-3">🏆</div>
-              <h4 className="font-semibold text-white mb-2">Earn Scores</h4>
-              <p className="text-indigo-100">Get instant feedback and build your chemistry knowledge with quizzes</p>
-            </div>
-          </div>
-        </div>
-      </section>
+          </section>
+        </section>
+      </main>
 
       <footer className="relative z-10 bg-black/30 backdrop-blur-md border-t border-white/20 mt-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 text-center">
